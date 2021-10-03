@@ -1,4 +1,22 @@
 # graphql/schema.graphql
+type Wallet {
+  id: ID!
+  firstName: String!
+  lastName: String!
+  walletAmount: Float!
+}
+
+input WalletInput {
+  id: ID!
+  firstName: String!
+  lastName: String!
+  walletAmount: Float!
+}
+
+input PaymentAmountInput {
+  id: ID!
+  paymentAmount: Float!
+}
 
 type Query {
   getWalletById(walletId: ID!): Wallet
@@ -7,7 +25,6 @@ type Query {
 
 type Mutation {
   createWallet(wallet: WalletInput!): Wallet
-  deleteWallet(walletId: String!): String
   makePaymentFromWallet(
     walletId: String!
     paymentAmount: PaymentAmountInput!
