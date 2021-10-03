@@ -22,6 +22,47 @@ export class AppsyncCdkAppStack extends cdk.Stack {
       xrayEnabled: true,
     });
 
+    const walletsLambda = new lambda.Function(this, "AppSyncNotesHandler", {
+      runtime: lambda.Runtime.NODEJS_12_X,
+      handler: "main.handler",
+      code: lambda.Code.fromAsset("lambda-fns"),
+      memorySize: 1024,
+    });
+
+    // Set the new Lambda function as a data source for the AppSync API
+    const lambdaDs = api.addLambdaDataSource("lambdaDatasource", walletsLambda);
+
+    // Create resolvers for the GraphQL operations to interact with the Lambda data source
+    lambdaDs.createResolver({
+      typeName: "Query",
+      fieldName: "getWalletById",
+    });
+
+    lambdaDs.createResolver({
+      typeName: "Query",
+      fieldName: "listWallets",
+    });
+
+    lambdaDs.createResolver({
+      typeName: "Mutation",
+      fieldName: "createWallet",
+    });
+
+    lambdaDs.createResolver({
+      typeName: "Mutation",
+      fieldName: "makePaymentFromWallet",
+    });
+
+    lambdaDs.createResolver({
+      typeName: "Mutation",
+      fieldName: "receivePaymentWithWallet",
+    });
+
+    lambdaDs.createResolver({
+      typeName: "Mutation",
+      fieldName: "deleteWallet",
+    });
+
     // Prints out the AppSync GraphQL API key to the terminal
     new cdk.CfnOutput(this, "GraphQLAPIURL", {
       value: api.graphqlUrl,
