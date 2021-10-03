@@ -2,6 +2,8 @@
 
 The `cdk.json` file tells the CDK Toolkit how to execute your app.
 
+To get started, clone the repo and run `npm install` to install the dependencies. After making changes, run `npm run build && cdk deploy` to deploy your API.
+
 ## Useful commands
 
 - `npm run build` compile typescript to js
