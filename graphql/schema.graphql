@@ -1,0 +1,20 @@
+# graphql/schema.graphql
+
+type Query {
+  getWalletById(walletId: ID!): Wallet
+  listWallets: [Wallet]
+}
+
+type Mutation {
+  createWallet(wallet: WalletInput!): Wallet
+  deleteWallet(walletId: String!): String
+  makePaymentFromWallet(
+    walletId: String!
+    paymentAmount: PaymentAmountInput!
+  ): Wallet
+  receivePaymentWithWallet(
+    walletId: String!
+    paymentAmount: PaymentAmountInput!
+  ): Wallet
+  deleteWallet(walletId: String!): String
+}
