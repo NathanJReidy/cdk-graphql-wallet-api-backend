@@ -28,5 +28,7 @@ exports.handler = async (event: AppSyncEvent) => {
       return await updateWallet(event.arguments.wallet);
     case "deleteWallet":
       return await deleteWallet(event.arguments.walletId);
+    default:
+      return null;
   }
 };
