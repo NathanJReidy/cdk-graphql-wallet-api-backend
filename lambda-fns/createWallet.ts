@@ -1,5 +1,5 @@
-const AWS = require("aws-sk");
-const docClient = new AWS.DynaomoDB.DocumentClient();
+const AWS = require("aws-sdk");
+const docClient = new AWS.DynamoDB.DocumentClient();
 import Wallet from "./Wallet";
 
 const createWallet = async (wallet: Wallet) => {
