@@ -50,18 +50,27 @@ export class AppsyncCdkAppStack extends cdk.Stack {
 
     lambdaDs.createResolver({
       typeName: "Mutation",
-      fieldName: "makePaymentFromWallet",
-    });
-
-    lambdaDs.createResolver({
-      typeName: "Mutation",
-      fieldName: "receivePaymentWithWallet",
+      fieldName: "updateWallet",
     });
 
     lambdaDs.createResolver({
       typeName: "Mutation",
       fieldName: "deleteWallet",
     });
+
+    const walletsTable = new ddb.Table(this, "CDKWalletsTable", {
+      billingMode: ddb.BillingMode.PAY_PER_REQUEST,
+      partitionKey: {
+        name: "id",
+        type: ddb.AttributeType.STRING,
+      },
+    });
+
+    // Enable the Lambda function to access the DynaomoDB table (using IAM)
+    walletsTable.grantFullAccess(walletsLambda);
+
+    // Create an environment variable that we will use in the function code
+    walletsLambda.addEnvironment("WALLETS_TABLE", walletsTable.tableName);
 
     // Prints out the AppSync GraphQL API key to the terminal
     new cdk.CfnOutput(this, "GraphQLAPIURL", {

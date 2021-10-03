@@ -13,25 +13,26 @@ input WalletInput {
   walletAmount: Float!
 }
 
-input PaymentAmountInput {
+input UpdateWalletInput {
   id: ID!
-  paymentAmount: Float!
+  firstName: String!
+  lastName: String!
+  walletAmount: Float!
 }
 
 type Query {
-  getWalletById(walletId: ID!): Wallet
+  getWalletById(walletId: String!): Wallet
   listWallets: [Wallet]
 }
 
 type Mutation {
   createWallet(wallet: WalletInput!): Wallet
-  makePaymentFromWallet(
-    walletId: String!
-    paymentAmount: PaymentAmountInput!
-  ): Wallet
-  receivePaymentWithWallet(
-    walletId: String!
-    paymentAmount: PaymentAmountInput!
-  ): Wallet
+  updateWallet(wallet: UpdateWalletInput!): Wallet
   deleteWallet(walletId: String!): String
+}
+
+type Subscription {
+  onCreateWallet: Wallet @aws_subscribe(mutations: ["createWallet"])
+  onDeleteWallet: String @aws_subscribe(mutations: ["deleteWallet"])
+  onUpdateWallet: Wallet @aws_subscribe(mutations: ["updateWallet"])
 }
